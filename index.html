@@ -242,7 +242,6 @@
                         <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
                     </form>
                     
-                    <!-- Mensaje de confirmación -->
                     <div id="successMessage" class="success-message" style="display: none;">
                         <p>¡Mensaje enviado correctamente! Te contactaré pronto.</p>
                     </div>
@@ -258,38 +257,39 @@
         </div>
     </footer>
 
-    <!-- Modal de Bienvenida -->
-    <div id="welcomeModal" class="welcome-modal">
-        <div class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>¡Bienvenido!</h2>
-                    <p>Por favor, ingresa tu nombre para personalizar tu experiencia</p>
-                </div>
-                <div class="modal-body">
-                    <form id="welcomeForm">
-                        <div class="form-group">
-                            <label for="userName">Tu nombre completo:</label>
-                            <input type="text" id="userName" name="userName" placeholder="Ej: María González" required>
-                            <div id="nameError" class="error-message"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="skipWelcome" class="btn btn-secondary">Continuar sin nombre</button>
-                    <button type="button" id="submitWelcome" class="btn btn-primary">Continuar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mensaje de Bienvenida Personalizado -->
-    <div id="welcomeMessage" class="welcome-message" style="display: none;">
-        <div class="welcome-content">
-            <span id="welcomeText"></span>
-            <button id="closeWelcome" class="close-welcome">&times;</button>
-        </div>
-    </div>
+    <!-- Chatbase Widget -->
+    <script>
+    (function(){
+        if(!window.chatbase || window.chatbase("getState") !== "initialized"){
+            window.chatbase = (...arguments) => {
+                if(!window.chatbase.q){
+                    window.chatbase.q = []
+                }
+                window.chatbase.q.push(arguments)
+            };
+            window.chatbase = new Proxy(window.chatbase, {
+                get(target, prop){
+                    if(prop === "q"){
+                        return target.q
+                    }
+                    return (...args) => target(prop, ...args)
+                }
+            });
+            const onLoad = function(){
+                const script = document.createElement("script");
+                script.src = "https://www.chatbase.co/embed.min.js";
+                script.id = "1Oy1bok9bK2QYnpmogjgq";
+                script.domain = "www.chatbase.co";
+                document.body.appendChild(script);
+            };
+            if(document.readyState === "complete"){
+                onLoad()
+            } else {
+                window.addEventListener("load", onLoad)
+            }
+        }
+    })();
+    </script>
 
     <!-- Enlace al archivo JavaScript -->
     <script src="js/script.js"></script>
